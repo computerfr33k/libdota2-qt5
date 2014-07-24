@@ -1,0 +1,12 @@
+#ifndef LIBDOTA2_GLOBAL_H
+#define LIBDOTA2_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(LIBDOTA2_LIBRARY)
+#  define LIBDOTA2SHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define LIBDOTA2SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // LIBDOTA2_GLOBAL_H
