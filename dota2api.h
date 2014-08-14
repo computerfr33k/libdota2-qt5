@@ -20,7 +20,7 @@ public:
     ~Dota2API();
 
     QString getLibVersion();
-    QJsonDocument getMatch(QString match_id);
+    QByteArray getMatch(QString match_id);
     void setApiKey(QString api_key);
     QJsonDocument loadReplayFromFile(QString path /*full path including filename*/);
 
@@ -32,6 +32,9 @@ private:
     QNetworkAccessManager *netManager;
     QNetworkRequest netRequest;
     QNetworkReply *netReply;
+
+private slots:
+    void netError(QNetworkReply::NetworkError);
 };
 
 #endif // DOTA2API_H
