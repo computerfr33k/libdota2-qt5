@@ -10,6 +10,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QEventLoop>
+#include <QThread>
+#include <QCoreApplication>
 
 class LIBDOTA2SHARED_EXPORT Dota2API : public QObject
 {
@@ -32,6 +34,9 @@ private:
 
     QString lib_version;
     QString apiKey;
+
+    //QCoreApplication *eventLoop;
+
     QNetworkAccessManager *netManager;
     QNetworkRequest netRequest;
     QNetworkReply *netReply;
@@ -39,6 +44,7 @@ private:
 private slots:
     void netError(QNetworkReply::NetworkError);
     void downloadReadyRead();
+    void downloadProgress(qint64, qint64);
 };
 
 #endif // DOTA2API_H
