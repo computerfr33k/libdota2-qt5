@@ -25,18 +25,24 @@ void Dota2API::setApiKey(QString api_key)
     this->apiKey = api_key;
 }
 
-QByteArray Dota2API::getMatch(QString match_id)
+void Dota2API::getMatch(QString match_id)
 {
     QString matchUrl = Dota2API::matchDetailsURL;
     QUrl url = QUrl(matchUrl.replace("<api_key>", this->apiKey).replace("<match_id>", match_id));
 
     this->netReply = this->netManager->get(QNetworkRequest(url));
-    QEventLoop event;
-    connect(this->netReply, SIGNAL(finished()), &event, SLOT(quit()));
-    connect(netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(netError(QNetworkReply::NetworkError)));
-    event.exec();
+    connect(this->netReply, SIGNAL(finished()), this, SLOT(downloadReadyRead()));
 
-    return this->netReply->readAll();
+    connect(netReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(netError(QNetworkReply::NetworkError)));
+}
+
+void Dota2API::downloadReadyRead()
+{
+    QString tmp =  "{\"name\":\"test\"}";
+    QJsonDocument json;
+    json = QJsonDocument::fromJson(tmp.toLatin1());
+
+    emit matchInfoReady(json);
 }
 
 QJsonDocument Dota2API::loadReplayFromFile(QString path)
