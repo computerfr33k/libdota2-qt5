@@ -24,7 +24,6 @@ public:
     void setApiKey(QString api_key);
     QJsonDocument loadReplayFromFile(QString path /*full path including filename*/);
 
-    //slots
 signals:
     void matchInfoReady(QJsonDocument);
 
