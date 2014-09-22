@@ -30,21 +30,25 @@ signals:
     void matchInfoReady(QJsonDocument);
 
 private:
+    //Functions
+    //
+
+    // Members
     static QString const matchDetailsURL;
 
     QString lib_version;
     QString apiKey;
 
-    //QCoreApplication *eventLoop;
-
     QNetworkAccessManager *netManager;
     QNetworkRequest netRequest;
     QNetworkReply *netReply;
+    //
 
 private slots:
     void netError(QNetworkReply::NetworkError);
     void downloadReadyRead();
     void downloadProgress(qint64, qint64);
+    void netAccessChanged(QNetworkAccessManager::NetworkAccessibility);
 };
 
 #endif // DOTA2API_H
