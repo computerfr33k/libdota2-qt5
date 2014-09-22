@@ -1,8 +1,8 @@
 #include "dota2api.h"
 
-//const variables
+/* const variables */
 const QString Dota2API::matchDetailsURL = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?key=<api_key>&match_id=<match_id>";
-//end const variables
+/* end const variables */
 
 Dota2API::Dota2API(QObject *parent) : QObject(parent)
 {
