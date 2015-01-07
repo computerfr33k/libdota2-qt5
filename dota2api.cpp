@@ -48,10 +48,10 @@ void Dota2API::getMatch(QString match_id)
     connect(this->netManager, SIGNAL(finished(QNetworkReply*)), this->netManager, SLOT(deleteLater()));
     connect(this->netReply, SIGNAL(finished()), this->netReply, SLOT(deleteLater()));
 
+    //event loop for processing network requests
     QEventLoop eventLoop;
-    //connect(this->netReply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
-
-    qDebug() << "Event Loop (library)[bool]: " << eventLoop.processEvents();
+    connect(this->netReply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
+    eventLoop.exec();
 }
 
 QJsonDocument Dota2API::loadReplayFromFile(QString path)
@@ -70,7 +70,8 @@ void Dota2API::downloadReadyRead()
 {
     // emits the signal so the caller knows when dl is complete.
     // also sends the data as a json document to the caller's slot
-    emit matchInfoReady(QJsonDocument::fromJson( this->netReply->readAll() ));
+    //emit matchInfoReady(QJsonDocument::fromJson( this->netReply->readAll() ));
+    parseReplay(QJsonDocument::fromJson(this->netReply->readAll()));
 }
 
 void Dota2API::downloadProgress(qint64 curr, qint64 tot)
@@ -86,6 +87,19 @@ void Dota2API::netError(QNetworkReply::NetworkError netError)
 void Dota2API::netAccessChanged(QNetworkAccessManager::NetworkAccessibility state)
 {
     qDebug() << state;
+}
+
+void Dota2API::parseReplay(QJsonDocument matchJSON)
+{
+    ParsedReplayData data;
+    Slots *players = new Slots[10];
+
+    QJsonObject result = matchJSON.object().value("result").toObject();
+    data.duration = result.value("duration").toDouble();
+    data.first_blood_time = result.value("first_blood_time").toInt();
+
+    players[0].id = 1337;
+    qDebug() << players[0].id;
 }
 
 /* End Private Slots */

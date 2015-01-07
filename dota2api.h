@@ -2,6 +2,8 @@
 #define DOTA2API_H
 
 #include "libdota2_global.h"
+#include "parsedreplaydata.h"
+
 #include <QObject>
 #include <QString>
 #include <QNetworkAccessManager>
@@ -42,6 +44,7 @@ private:
     QNetworkAccessManager *netManager;
     QNetworkRequest netRequest;
     QNetworkReply *netReply;
+    void parseReplay(QJsonDocument);
     //
 
 private slots:

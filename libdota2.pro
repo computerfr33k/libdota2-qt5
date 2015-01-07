@@ -16,7 +16,8 @@ DEFINES += LIBDOTA2_LIBRARY
 SOURCES += dota2api.cpp
 
 HEADERS += dota2api.h\
-        libdota2_global.h
+        libdota2_global.h \
+    parsedreplaydata.h
 
 unix {
     target.path = /usr/lib
