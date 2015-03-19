@@ -8,18 +8,19 @@ QT       += network
 
 QT       -= gui
 
-TARGET = libdota2
+TARGET = dota2
 TEMPLATE = lib
 
-DEFINES += LIBDOTA2_LIBRARY
+DEFINES += DOTA2_LIBRARY
 
-SOURCES += dota2api.cpp
+SOURCES += dota2api.cpp \
+    parsedreplaydata.cpp
 
 HEADERS += dota2api.h\
         libdota2_global.h \
     parsedreplaydata.h
 
 unix {
-    target.path = /usr/lib
+    target.path = /usr/local/lib
     INSTALLS += target
 }

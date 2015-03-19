@@ -15,6 +15,8 @@
 #include <QThread>
 #include <QCoreApplication>
 
+#include "parsedreplaydata.h"
+
 class LIBDOTA2SHARED_EXPORT Dota2API : public QObject
 {
     Q_OBJECT
@@ -24,9 +26,11 @@ public:
     ~Dota2API();
 
     QString getLibVersion();
-    void getMatch(QString match_id);
+    void getMatchInfo(QString match_id);
     void setApiKey(QString api_key);
-    QJsonDocument loadReplayFromFile(QString path /*full path including filename*/);
+
+public:
+    static QString const matchDetailsURL;
 
 signals:
     void matchInfoReady(QJsonDocument);
@@ -36,20 +40,18 @@ private:
     //
 
     // Members
-    static QString const matchDetailsURL;
-
     QString lib_version;
     QString apiKey;
+    ParsedReplayData parser;
 
     QNetworkAccessManager *netManager;
     QNetworkRequest netRequest;
     QNetworkReply *netReply;
-    void parseReplay(QJsonDocument);
     //
 
 private slots:
     void netError(QNetworkReply::NetworkError);
-    void downloadReadyRead();
+    void dlMatchInfoFinished();
     void downloadProgress(qint64, qint64);
     void netAccessChanged(QNetworkAccessManager::NetworkAccessibility);
 };
