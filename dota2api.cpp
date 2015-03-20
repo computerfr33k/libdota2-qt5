@@ -1,78 +1,37 @@
 #include "dota2api.h"
 
-/* const variables */
-const QString Dota2API::matchDetailsURL = "https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?key=<api_key>&match_id=<match_id>";
-/* end const variables */
-
-Dota2API::Dota2API(QObject *parent) : QObject(parent)
+Dota2API::Dota2API()
 {
-    this->lib_version = "0.1";
-    this->netManager = new QNetworkAccessManager();
 }
 
 Dota2API::~Dota2API()
 {
 }
 
-/* Public Methods */
-
-QString Dota2API::getLibVersion()
+/* not the best solution, but maybe I can optimize it later on. Or maybe somebody can submit an idea for how to make this better. */
+const QMap<int,QJsonObject> Dota2API::getItems()
 {
-    return this->lib_version;
-}
+    QMap<int,QJsonObject> list;
 
-void Dota2API::setApiKey(QString api_key)
-{
-    this->apiKey = api_key;
-}
+    QFile file("content/data/items.json");
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug() << file.errorString();
 
-void Dota2API::getMatchInfo(QString match_id)
-{
-    QString matchUrl = Dota2API::matchDetailsURL; // gotta copy the url since it is from a const and we are going to do a string replace
-    QUrl url = QUrl(matchUrl.replace("<api_key>", this->apiKey).replace("<match_id>", match_id));
-
-    if(this->netManager->networkAccessible() != QNetworkAccessManager::Accessible)
-    {
-        qDebug() << "Network Not Connected or cannot be reached!";
-        return;
+        /* list will be empty since we never populated due to reading file error */
+        return list;
     }
 
-    this->netReply = this->netManager->get(QNetworkRequest(url));
+    QJsonDocument items = QJsonDocument::fromJson(file.readAll());
+    file.close();
 
-    connect(this->netReply, SIGNAL(finished()), this, SLOT(dlMatchInfoFinished()));
-    connect(this->netReply, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
+    QJsonArray itemArray = items.object().value("items").toArray();
 
-    //slots for deleting after finished
-    connect(this->netManager, SIGNAL(finished(QNetworkReply*)), this->netManager, SLOT(deleteLater()));
-    connect(this->netReply, SIGNAL(finished()), this->netReply, SLOT(deleteLater()));
+    int size = itemArray.size();
+    for(int i=0; i < size; i++) {
+        /* for whatever reason, Qt likes to convert numbers in JSON to doubles. ugh! */
+        int id = QString::number(itemArray.at(i).toObject().value("id").toDouble(), 'f', 0).toInt();
+        list[id] = itemArray.at(i).toObject();
+    }
 
-    //event loop for processing network requests
-    QEventLoop eventLoop;
-    connect(this->netReply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
-    eventLoop.exec();
+    return list;
 }
-
-/* End Public Methods */
-
-/* Private Slots */
-void Dota2API::dlMatchInfoFinished()
-{
-    parser.parse(QJsonDocument::fromJson(this->netReply->readAll()));
-}
-
-void Dota2API::downloadProgress(qint64 curr, qint64 tot)
-{
-    qDebug() << " " << curr << " " << tot;
-}
-
-void Dota2API::netError(QNetworkReply::NetworkError netError)
-{
-    qDebug() << netError;
-}
-
-void Dota2API::netAccessChanged(QNetworkAccessManager::NetworkAccessibility state)
-{
-    qDebug() << state;
-}
-
-/* End Private Slots */
