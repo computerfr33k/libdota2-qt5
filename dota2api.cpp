@@ -2,10 +2,12 @@
 
 Dota2API::Dota2API()
 {
+    qnam = new QNetworkAccessManager;
 }
 
 Dota2API::~Dota2API()
 {
+    delete qnam;
 }
 
 /* not the best solution, but maybe I can optimize it later on. Or maybe somebody can submit an idea for how to make this better. */
@@ -34,4 +36,41 @@ const QMap<int,QJsonObject> Dota2API::getItems()
     }
 
     return list;
+}
+
+const QString Dota2API::getMatchInfo(qint32 matchId)
+{
+    QString urlBuilder = baseUrl.toString();
+    urlBuilder.append("GetMatchDetails/v001/");
+    urlBuilder.append("?key=" + this->key);
+    urlBuilder.append("&match_id=" + matchId);
+
+    QUrl url = QUrl(urlBuilder);
+
+    QNetworkRequest request = QNetworkRequest(url);
+    QNetworkReply *reply = qnam->get(request);
+
+    QEventLoop loop;
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    qDebug() << reply->readAll();
+
+    reply->close();
+    reply->deleteLater();
+}
+
+void Dota2API::setFormat(QString format)
+{
+    this->format = format;
+}
+
+void Dota2API::setKey(QString key)
+{
+    this->key = key;
+}
+
+void Dota2API::setLanguage(QString lang)
+{
+    this->language = lang;
 }

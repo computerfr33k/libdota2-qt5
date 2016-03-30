@@ -14,11 +14,11 @@ TEMPLATE = lib
 DEFINES += DOTA2API_LIBRARY
 
 SOURCES += dota2api.cpp \
-    player.cpp
+    entities/player.cpp
 
 HEADERS += dota2api.h\
         dota2api_global.h \
-    player.h
+    entities/player.h
 
 unix {
     target.path = /usr/lib

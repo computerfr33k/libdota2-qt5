@@ -4,10 +4,10 @@ class PlayerPrivate
 {
 public:
     virtual ~PlayerPrivate() { }
+
     /* Variables */
     qint32 account_id;
     qint32 player_slot;
-    /* this is the array to hold all of the items. easier than having seperate variables for each item. */
     qint32 items[6];
     qint32 kills;
     qint32 deaths;
