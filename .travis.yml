@@ -1,0 +1,10 @@
+language: cpp
+compiler:
+- clang
+- gcc
+
+before_script:
+  - qmake
+
+script:
+  - make
