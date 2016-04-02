@@ -10,35 +10,7 @@ Dota2API::~Dota2API()
     delete qnam;
 }
 
-/* not the best solution, but maybe I can optimize it later on. Or maybe somebody can submit an idea for how to make this better. */
-const QMap<int,QJsonObject> Dota2API::getItems()
-{
-    QMap<int,QJsonObject> list;
-
-    QFile file("content/data/items.json");
-    if(!file.open(QIODevice::ReadOnly)) {
-        qDebug() << file.errorString();
-
-        /* list will be empty since we never populated due to reading file error */
-        return list;
-    }
-
-    QJsonDocument items = QJsonDocument::fromJson(file.readAll());
-    file.close();
-
-    QJsonArray itemArray = items.object().value("items").toArray();
-
-    int size = itemArray.size();
-    for(int i=0; i < size; i++) {
-        /* for whatever reason, Qt likes to convert numbers in JSON to doubles. ugh! */
-        int id = QString::number(itemArray.at(i).toObject().value("id").toDouble(), 'f', 0).toInt();
-        list[id] = itemArray.at(i).toObject();
-    }
-
-    return list;
-}
-
-const QString Dota2API::getMatchInfo(qint32 matchId)
+const Match Dota2API::getMatchInfo(QString matchId)
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder.append("GetMatchDetails/v001/");
@@ -46,18 +18,31 @@ const QString Dota2API::getMatchInfo(qint32 matchId)
     urlBuilder.append("&match_id=" + matchId);
 
     QUrl url = QUrl(urlBuilder);
-
-    QNetworkRequest request = QNetworkRequest(url);
-    QNetworkReply *reply = qnam->get(request);
+    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
 
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    qDebug() << reply->readAll();
-
+    QString response = reply->readAll();
     reply->close();
     reply->deleteLater();
+
+    Match match_response;
+    std::string err;
+
+    rapidjson::Document d;
+    d.Parse(response.toStdString().c_str());
+
+    rapidjson::Value &result = d["result"];
+
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    result.Accept(writer);
+
+    pbjson::json2pb(buffer.GetString(), &match_response, err);
+
+    return match_response;
 }
 
 void Dota2API::setFormat(QString format)
@@ -68,6 +53,11 @@ void Dota2API::setFormat(QString format)
 void Dota2API::setKey(QString key)
 {
     this->key = key;
+}
+
+const QString Dota2API::getKey()
+{
+    return this->key;
 }
 
 void Dota2API::setLanguage(QString lang)
