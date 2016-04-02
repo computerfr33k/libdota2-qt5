@@ -16,6 +16,8 @@ before_install:
 before_script:
   - qmake -project
   - qmake Dota2API.pro
+  - cd Protobuf && protoc --cpp_out=generated Match.proto
+  - cd ..
 
 script:
   - make
