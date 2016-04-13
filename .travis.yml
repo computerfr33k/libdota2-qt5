@@ -14,7 +14,6 @@ before_install:
   - sudo apt-get install -y protobuf-compiler protobuf-c-compiler libprotobuf-dev
 
 before_script:
-  - qmake -project
   - qmake Dota2API.pro
   - cd Protobuf && protoc --cpp_out=generated Match.proto
   - cd ..
