@@ -17,7 +17,8 @@ DEFINES += DOTA2API_LIBRARY
 
 SOURCES += dota2api.cpp \
     dependencies/pbjson/src/pbjson.cpp \
-    Protobuf/generated/Match.pb.cc
+    Protobuf/generated/Match.pb.cc \
+    exceptions/matchhistorynotavailableexception.cpp
 
 HEADERS += dota2api.h\
         dota2api_global.h \
@@ -50,7 +51,8 @@ HEADERS += dota2api.h\
     dependencies/pbjson/src/rapidjson/writer.h \
     dependencies/pbjson/src/bin2ascii.h \
     dependencies/pbjson/src/pbjson.hpp \
-    Protobuf/generated/Match.pb.h
+    Protobuf/generated/Match.pb.h \
+    exceptions/matchhistorynotavailableexception.h
 
 unix {
     target.path = /usr/lib

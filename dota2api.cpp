@@ -45,6 +45,35 @@ const Match Dota2API::getMatchInfo(QString matchId)
     return match_response;
 }
 
+const QList<QString> Dota2API::getMatchHistory(QString steamId)
+{
+    QString urlBuilder = baseUrl.toString();
+    urlBuilder.append("GetMatchHistory/v1/");
+    urlBuilder.append("?key=" + this->key);
+    urlBuilder.append("&account_id=" + steamId);
+
+    QUrl url = QUrl(urlBuilder);
+    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
+
+    QEventLoop loop;
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
+    qDebug() << json.toJson();
+
+    /**
+{
+    "result": {
+        "status": 15,
+        "statusDetail": "Cannot get match history for a user that hasn't allowed it"
+    }
+}
+    */
+
+    // throw MatchHistoryNotAvailableException("Player has private match history");
+}
+
 void Dota2API::setFormat(QString format)
 {
     this->format = format;

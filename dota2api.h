@@ -9,7 +9,9 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QEventLoop>
+#include <QList>
 #include <QDebug>
+#include <QException>
 
 #include "dota2api_global.h"
 #include "Protobuf/generated/Match.pb.h"
@@ -28,6 +30,7 @@ public:
     ~Dota2API();
 
     const Match getMatchInfo(QString matchId);
+    const QList<QString> getMatchHistory(QString steamId);
 
     const QString getKey();
 
