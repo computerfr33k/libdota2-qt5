@@ -1,8 +1,18 @@
 #include "dota2api.h"
 
+// Initialize static members
+QUrl Dota2API::baseUrl = QUrl("https://api.steampowered.com/IDOTA2Match_570/");
+QString Dota2API::key = "";
+QString Dota2API::language  = "en_us";
+QString Dota2API::format = "json";
+// end initialize static
+
 Dota2API::Dota2API()
 {
     qnam = new QNetworkAccessManager;
+    QNetworkDiskCache *cache = new QNetworkDiskCache;
+    cache->setCacheDirectory(QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first());
+    qnam->setCache(cache);
 }
 
 Dota2API::~Dota2API()
@@ -10,15 +20,16 @@ Dota2API::~Dota2API()
     delete qnam;
 }
 
-const Match Dota2API::getMatchInfo(QString matchId)
+const QString Dota2API::getMatchInfo(QString matchId)
 {
     QString urlBuilder = baseUrl.toString();
-    urlBuilder.append("GetMatchDetails/v001/");
-    urlBuilder.append("?key=" + this->key);
-    urlBuilder.append("&match_id=" + matchId);
+    urlBuilder += QString("GetMatchDetails/v001/?key=%1&match_id=%2").arg(this->getKey()).arg(matchId);
+    qDebug() << urlBuilder;
 
-    QUrl url = QUrl(urlBuilder);
-    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
+    QUrl url = QUrl::fromUserInput(urlBuilder);
+    QNetworkRequest request(url);
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+    QNetworkReply *reply = qnam->get(request);
 
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
@@ -28,21 +39,16 @@ const Match Dota2API::getMatchInfo(QString matchId)
     reply->close();
     reply->deleteLater();
 
-    Match match_response;
-    std::string err;
+    QJsonDocument json = QJsonDocument::fromJson(response.toUtf8());
+    QJsonDocument doc;
+    doc.setObject(json.object().value("result").toObject());
 
-    rapidjson::Document d;
-    d.Parse(response.toStdString().c_str());
+    PlayerContainer players;
+    PlayerJsonSerializer::parse(doc.toJson(), players);
 
-    rapidjson::Value &result = d["result"];
+    qDebug() << players.getPlayers().first().getAccountId();
 
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    result.Accept(writer);
-
-    pbjson::json2pb(buffer.GetString(), &match_response, err);
-
-    return match_response;
+    return response;
 }
 
 const QList<QString> Dota2API::getMatchHistory(QString steamId)
@@ -61,6 +67,8 @@ const QList<QString> Dota2API::getMatchHistory(QString steamId)
 
     QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
     qDebug() << json.toJson();
+
+    return QList<QString>();
 
     /**
 {
@@ -81,12 +89,12 @@ void Dota2API::setFormat(QString format)
 
 void Dota2API::setKey(QString key)
 {
-    this->key = key;
+    Dota2API::key = key;
 }
 
 const QString Dota2API::getKey()
 {
-    return this->key;
+    return Dota2API::key;
 }
 
 void Dota2API::setLanguage(QString lang)

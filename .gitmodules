@@ -1,3 +1,0 @@
-[submodule "dependencies/pbjson"]
-	path = dependencies/pbjson
-	url = https://github.com/yinqiwen/pbjson.git

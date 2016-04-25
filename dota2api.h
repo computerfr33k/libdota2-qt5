@@ -12,16 +12,13 @@
 #include <QList>
 #include <QDebug>
 #include <QException>
+#include <QNetworkDiskCache>
 
 #include "dota2api_global.h"
-#include "Protobuf/generated/Match.pb.h"
-#include <pbjson.hpp>
-#include "dependencies/pbjson/src/rapidjson/document.h"
-#include "dependencies/pbjson/src/rapidjson/writer.h"
-#include "dependencies/pbjson/src/rapidjson/rapidjson.h"
-#include "dependencies/pbjson/src/rapidjson/stringbuffer.h"
+#include <entities/player.h>
+#include <entities/playercontainer.h>
 
-using computerfr33k::dota2::entities::Match;
+using namespace std;
 
 class DOTA2APISHARED_EXPORT Dota2API
 {
@@ -29,7 +26,7 @@ public:
     explicit Dota2API();
     ~Dota2API();
 
-    const Match getMatchInfo(QString matchId);
+    const QString getMatchInfo(QString matchId);
     const QList<QString> getMatchHistory(QString steamId);
 
     const QString getKey();
@@ -42,10 +39,10 @@ public:
     void setFormat(QString format);
 
 protected:
-    QUrl baseUrl = QUrl("https://api.steampowered.com/IDOTA2Match_570/");
-    QString key;
-    QString language = "en_us";
-    QString format = "json";
+    static QUrl baseUrl;
+    static QString key;
+    static QString language;
+    static QString format;
 
 private:
     QNetworkAccessManager *qnam;
