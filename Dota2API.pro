@@ -15,7 +15,6 @@ LIBS += -lprotobuf
 DEFINES += DOTA2API_LIBRARY
 
 SOURCES += dota2api.cpp \
-    exceptions/matchhistorynotavailableexception.cpp \
     entities/player.cpp \
     entities/playercontainer.cpp \
     serializers/playerjsonserializer.cpp \
@@ -24,7 +23,6 @@ SOURCES += dota2api.cpp \
 
 HEADERS += dota2api.h\
         dota2api_global.h \
-    exceptions/matchhistorynotavailableexception.h \
     serializers/playerjsonserializer.h \
     entities/player.h \
     entities/playercontainer.h \

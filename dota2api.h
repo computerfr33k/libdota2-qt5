@@ -11,8 +11,8 @@
 #include <QEventLoop>
 #include <QList>
 #include <QDebug>
-#include <QException>
 #include <QNetworkDiskCache>
+#include <QStandardPaths>
 
 #include "dota2api_global.h"
 #include <entities/player.h>
