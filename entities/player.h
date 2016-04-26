@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QHash>
 #include <QException>
+#include <cmath>
+
 #include <serializers/playerjsonserializer.h>
 
 class Player : public JsonSerializable
