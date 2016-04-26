@@ -18,6 +18,8 @@
 #include <entities/player.h>
 #include <entities/playercontainer.h>
 #include <entities/match.h>
+#include <entities/matchcontainer.h>
+#include <entities/matchhistory.h>
 
 using namespace std;
 
@@ -28,7 +30,7 @@ public:
     ~Dota2API();
 
     const Match getMatchInfo(QString matchId);
-    const QList<QString> getMatchHistory(QString steamId);
+    const MatchHistory getMatchHistory(QString accountId);
 
     const QString getKey();
 

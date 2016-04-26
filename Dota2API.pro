@@ -19,7 +19,9 @@ SOURCES += dota2api.cpp \
     entities/playercontainer.cpp \
     serializers/playerjsonserializer.cpp \
     entities/match.cpp \
-    serializers/matchjsonserializer.cpp
+    serializers/matchjsonserializer.cpp \
+    entities/matchcontainer.cpp \
+    entities/matchhistory.cpp
 
 HEADERS += dota2api.h\
         dota2api_global.h \
@@ -28,7 +30,11 @@ HEADERS += dota2api.h\
     entities/playercontainer.h \
     serializers/jsonserializable.h \
     entities/match.h \
-    serializers/matchjsonserializer.h
+    serializers/matchjsonserializer.h \
+    enums/gamemode.h \
+    enums/skill.h \
+    entities/matchcontainer.h \
+    entities/matchhistory.h
 
 unix {
     target.path = /usr/lib

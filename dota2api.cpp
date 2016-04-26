@@ -49,12 +49,19 @@ const Match Dota2API::getMatchInfo(QString matchId)
     return match;
 }
 
-const QList<QString> Dota2API::getMatchHistory(QString steamId)
+/**
+ * ref: https://wiki.teamfortress.com/wiki/WebAPI/GetMatchHistory
+ *
+ * @brief Dota2API::getMatchHistory
+ * @param accountId
+ * @return
+ */
+const MatchHistory Dota2API::getMatchHistory(QString accountId)
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder.append("GetMatchHistory/v1/");
     urlBuilder.append("?key=" + this->key);
-    urlBuilder.append("&account_id=" + steamId);
+    urlBuilder.append("&account_id=" + accountId);
 
     QUrl url = QUrl(urlBuilder);
     QNetworkReply *reply = qnam->get(QNetworkRequest(url));
@@ -64,18 +71,19 @@ const QList<QString> Dota2API::getMatchHistory(QString steamId)
     loop.exec();
 
     QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
-    qDebug() << json.toJson();
 
-    return QList<QString>();
-
-    /**
-{
-    "result": {
-        "status": 15,
-        "statusDetail": "Cannot get match history for a user that hasn't allowed it"
+    int resultStatus = json.object().value("result").toObject().value("status").toInt();
+    if (resultStatus == 15) {
+        throw QException();
     }
-}
-    */
+
+    QJsonDocument resultJson;
+    resultJson.setObject(json.object().value("result").toObject());
+
+    MatchHistory history;
+    MatchJsonSerializer::parse(resultJson.toJson(), history);
+
+    return history;
 
     // throw MatchHistoryNotAvailableException("Player has private match history");
 }
