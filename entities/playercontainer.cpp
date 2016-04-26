@@ -1,5 +1,8 @@
 #include "playercontainer.h"
 
+namespace entities
+{
+
 PlayerContainer::PlayerContainer()
 {
 
@@ -38,4 +41,6 @@ void PlayerContainer::add(Player &p)
 QList<Player> PlayerContainer::getPlayers()
 {
     return this->players;
+}
+
 }

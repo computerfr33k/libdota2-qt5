@@ -1,5 +1,8 @@
 #include "matchhistory.h"
 
+namespace entities
+{
+
 MatchHistory::MatchHistory()
 {
 
@@ -8,8 +11,6 @@ MatchHistory::MatchHistory()
 
 void MatchHistory::read(const QJsonObject &jsonObj)
 {
-    // TODO: Parse matches
-
     this->status = jsonObj["status"].toInt();
     if (!this->isSuccess()) {
         this->statusDetail = jsonObj["statusDetail"].toString();
@@ -18,6 +19,11 @@ void MatchHistory::read(const QJsonObject &jsonObj)
     this->num_results = jsonObj["num_results"].toInt();
     this->total_results = jsonObj["total_results"].toInt();
     this->results_remaining = jsonObj["results_remaining"].toInt();
+
+    // Parse matches
+    QJsonDocument doc;
+    doc.setObject(jsonObj);
+    MatchJsonSerializer::parse(doc.toJson(), this->matches);
 }
 
 void MatchHistory::write(QJsonObject &jsonObj) const
@@ -59,4 +65,11 @@ int MatchHistory::getTotalResults()
 int MatchHistory::getResultsRemaining()
 {
     return this->results_remaining;
+}
+
+QList<Match> MatchHistory::getMatches() const
+{
+    return this->matches.getMatches();
+}
+
 }

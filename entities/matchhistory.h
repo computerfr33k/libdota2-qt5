@@ -4,36 +4,44 @@
 #include <QObject>
 #include <QDebug>
 #include <serializers/jsonserializable.h>
+#include <entities/match.h>
+#include <entities/matchcontainer.h>
 
-class MatchHistory : public JsonSerializable
+namespace entities
 {
-public:
-    MatchHistory();
+    class MatchHistory : public JsonSerializable
+    {
+    public:
+        MatchHistory();
 
-    // JsonSerializable interface
-    void read(const QJsonObject &jsonObj);
-    void write(QJsonObject &jsonObj) const;
+        // JsonSerializable interface
+        void read(const QJsonObject &jsonObj);
+        void write(QJsonObject &jsonObj) const;
 
-    /*
-     * Getters
-     */
-    bool isSuccess();
-    int getStatus();
-    QString getStatusDetail();
-    int getNumberOfResults();
-    int getTotalResults();
-    int getResultsRemaining();
+        /*
+         * Getters
+         */
+        bool isSuccess();
+        int getStatus();
+        QString getStatusDetail();
+        int getNumberOfResults();
+        int getTotalResults();
+        int getResultsRemaining();
+        QList<Match> getMatches() const;
 
-    /*
-     * Setters
-     */
+        /*
+         * Setters
+         */
 
-private:
-    int status;
-    QString statusDetail;
-    int num_results;
-    int total_results;
-    int results_remaining;
-};
+    private:
+        int status;
+        QString statusDetail;
+        int num_results;
+        int total_results;
+        int results_remaining;
+        MatchContainer matches;
+    };
+
+}
 
 #endif // MATCHHISTORY_H

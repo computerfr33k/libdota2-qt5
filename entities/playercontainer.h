@@ -6,19 +6,21 @@
 #include <QList>
 #include <QJsonArray>
 
-class PlayerContainer : public JsonSerializable
+namespace entities
 {
-public:
-    PlayerContainer();
+    class PlayerContainer : public JsonSerializable
+    {
+    public:
+        PlayerContainer();
 
-    void add(Player &p);
-    void write(QJsonObject &jsonObj) const;
-    void read(const QJsonObject &jsonObj);
+        void add(Player &p);
+        void write(QJsonObject &jsonObj) const;
+        void read(const QJsonObject &jsonObj);
 
-    QList<Player> getPlayers();
+        QList<Player> getPlayers();
 
-private:
-    QList<Player> players;
-};
-
+    private:
+        QList<Player> players;
+    };
+}
 #endif // PLAYERCONTAINER_H

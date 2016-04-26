@@ -20,7 +20,7 @@ Dota2API::~Dota2API()
     delete qnam;
 }
 
-const Match Dota2API::getMatchInfo(QString matchId)
+const Match Dota2API::getMatchDetails(QString matchId)
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder += QString("GetMatchDetails/v001/?key=%1&match_id=%2").arg(this->getKey()).arg(matchId);

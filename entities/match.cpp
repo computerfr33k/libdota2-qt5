@@ -1,4 +1,6 @@
 #include "match.h"
+namespace entities
+{
 
 Match::Match()
 {
@@ -152,4 +154,6 @@ int Match::getDireScore()
 QList<Player> Match::getPlayers()
 {
     return this->players.getPlayers();
+}
+
 }

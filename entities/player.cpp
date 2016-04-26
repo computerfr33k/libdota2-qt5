@@ -1,5 +1,8 @@
 #include "player.h"
 
+namespace entities
+{
+
 Player::Player()
 {
     // Initialize to default values
@@ -237,4 +240,6 @@ void Player::setTowerDamage(int towerDamage)
 void Player::setHeroHealing(int heroHealing)
 {
     this->hero_healing = heroHealing;
+}
+
 }

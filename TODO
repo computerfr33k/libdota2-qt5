@@ -1,0 +1,3 @@
+* add methods for specifying the various endpoints parameters.
+* maybe add an execute function for each endpoint to help with the parameter methods TODO (#1).
+* Somehow support both async & sync method calls

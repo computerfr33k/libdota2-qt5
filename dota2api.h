@@ -22,6 +22,7 @@
 #include <entities/matchhistory.h>
 
 using namespace std;
+using namespace entities;
 
 class DOTA2APISHARED_EXPORT Dota2API
 {
@@ -29,7 +30,7 @@ public:
     explicit Dota2API();
     ~Dota2API();
 
-    const Match getMatchInfo(QString matchId);
+    const Match getMatchDetails(QString matchId);
     const MatchHistory getMatchHistory(QString accountId);
 
     const QString getKey();

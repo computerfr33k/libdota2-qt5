@@ -1,5 +1,8 @@
 #include "matchcontainer.h"
 
+namespace entities
+{
+
 MatchContainer::MatchContainer()
 {
 
@@ -30,4 +33,6 @@ void MatchContainer::read(const QJsonObject &jsonObj)
 
 void MatchContainer::write(QJsonObject &jsonObj) const
 {
+}
+
 }
