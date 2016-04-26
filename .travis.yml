@@ -11,12 +11,9 @@ before_install:
   - sudo apt-get update -qq -y
   - sudo apt-get install -y qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev
   - sudo apt-get install -y qt5-default qttools5-dev-tools
-  - sudo apt-get install -y protobuf-compiler protobuf-c-compiler libprotobuf-dev
 
 before_script:
   - qmake Dota2API.pro
-  - cd Protobuf && protoc --cpp_out=generated Match.proto
-  - cd ..
 
 script:
   - make
