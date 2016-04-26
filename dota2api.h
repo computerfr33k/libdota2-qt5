@@ -17,6 +17,7 @@
 #include "dota2api_global.h"
 #include <entities/player.h>
 #include <entities/playercontainer.h>
+#include <entities/match.h>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ public:
     explicit Dota2API();
     ~Dota2API();
 
-    const QString getMatchInfo(QString matchId);
+    const Match getMatchInfo(QString matchId);
     const QList<QString> getMatchHistory(QString steamId);
 
     const QString getKey();

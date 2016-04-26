@@ -11,6 +11,33 @@ void Player::read(const QJsonObject &jsonObj)
 {
     this->setAccountId( lrint(jsonObj["account_id"].toDouble()) );
     this->setPlayerSlot( jsonObj["player_slot"].toInt() );
+    this->setHeroId( jsonObj["hero_id"].toInt() );
+
+    QHash<int,int> items;
+    items[0] = jsonObj["item_0"].toInt();
+    items[1] = jsonObj["item_1"].toInt();
+    items[2] = jsonObj["item_2"].toInt();
+    items[3] = jsonObj["item_3"].toInt();
+    items[4] = jsonObj["item_4"].toInt();
+    items[5] = jsonObj["item_5"].toInt();
+    this->setItems(items);
+
+    this->setKills( jsonObj["kills"].toInt() );
+    this->setDeaths( jsonObj["deaths"].toInt() );
+    this->setAssists( jsonObj["assists"].toInt() );
+    this->setIsLeaver( jsonObj["leaver_status"].toBool() );
+    this->setLastHits( jsonObj["last_hits"].toInt() );
+    this->setDenies( jsonObj["denies"].toInt() );
+    this->setGoldPerMin( jsonObj["gold_per_min"].toInt() );
+    this->setXpPerMin( jsonObj["xp_per_min"].toInt() );
+    this->setLevel( jsonObj["level"].toInt() );
+    this->setGold( jsonObj["gold"].toInt() );
+    this->setGoldSpent( jsonObj["gold_spent"].toInt() );
+    this->setHeroDamage( jsonObj["hero_damage"].toInt() );
+    this->setTowerDamage( jsonObj["tower_damage"].toInt() );
+    this->setHeroHealing( jsonObj["hero_healing"].toInt() );
+
+    // TODO: Parse Ability Upgrades
 }
 
 void Player::write(QJsonObject &jsonObj) const

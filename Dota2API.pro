@@ -18,7 +18,9 @@ SOURCES += dota2api.cpp \
     exceptions/matchhistorynotavailableexception.cpp \
     entities/player.cpp \
     entities/playercontainer.cpp \
-    serializers/playerjsonserializer.cpp
+    serializers/playerjsonserializer.cpp \
+    entities/match.cpp \
+    serializers/matchjsonserializer.cpp
 
 HEADERS += dota2api.h\
         dota2api_global.h \
@@ -26,7 +28,9 @@ HEADERS += dota2api.h\
     serializers/playerjsonserializer.h \
     entities/player.h \
     entities/playercontainer.h \
-    serializers/jsonserializable.h
+    serializers/jsonserializable.h \
+    entities/match.h \
+    serializers/matchjsonserializer.h
 
 unix {
     target.path = /usr/lib

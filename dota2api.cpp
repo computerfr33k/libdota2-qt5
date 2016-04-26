@@ -20,7 +20,7 @@ Dota2API::~Dota2API()
     delete qnam;
 }
 
-const QString Dota2API::getMatchInfo(QString matchId)
+const Match Dota2API::getMatchInfo(QString matchId)
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder += QString("GetMatchDetails/v001/?key=%1&match_id=%2").arg(this->getKey()).arg(matchId);
@@ -43,12 +43,10 @@ const QString Dota2API::getMatchInfo(QString matchId)
     QJsonDocument doc;
     doc.setObject(json.object().value("result").toObject());
 
-    PlayerContainer players;
-    PlayerJsonSerializer::parse(doc.toJson(), players);
+    Match match;
+    MatchJsonSerializer::parse(doc.toJson(), match);
 
-    qDebug() << players.getPlayers().first().getAccountId();
-
-    return response;
+    return match;
 }
 
 const QList<QString> Dota2API::getMatchHistory(QString steamId)
