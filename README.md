@@ -7,3 +7,4 @@ This is a Qt 5 library for interacting with the Dota 2 API. It allows you to ret
 ## Currently Supported Endpoints
 * GetMatchHistory
 * GetMatchDetails
+* GetMatchHistoryBySequenceNum

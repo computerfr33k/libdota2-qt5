@@ -20,7 +20,7 @@ Dota2API::~Dota2API()
     delete qnam;
 }
 
-const Match Dota2API::getMatchDetails(QString matchId)
+Match Dota2API::getMatchDetails(QString matchId) const
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder += QString("GetMatchDetails/v001/?key=%1&match_id=%2").arg(this->getKey()).arg(matchId);
@@ -56,7 +56,7 @@ const Match Dota2API::getMatchDetails(QString matchId)
  * @param accountId
  * @return
  */
-const MatchHistory Dota2API::getMatchHistory(QString accountId)
+MatchHistory Dota2API::getMatchHistory(QString accountId) const
 {
     QString urlBuilder = baseUrl.toString();
     urlBuilder.append("GetMatchHistory/v1/");
@@ -88,6 +88,34 @@ const MatchHistory Dota2API::getMatchHistory(QString accountId)
     // throw MatchHistoryNotAvailableException("Player has private match history");
 }
 
+QList<Match> Dota2API::getMatchHistoryBySequenceNumber(qint64 start_match_seq_num) const
+{
+    QString urlBuilder = baseUrl.toString();
+    urlBuilder.append("GetMatchHistoryBySequenceNum/v1/");
+    urlBuilder.append("?key=" + this->key);
+    urlBuilder.append("&start_at_match_seq_num=" + QString::number(start_match_seq_num));
+
+    QUrl url = QUrl(urlBuilder);
+    qDebug() << url.toString();
+    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
+
+    QEventLoop loop;
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
+    int status = json.object().value("result").toObject().value("status").toInt();
+    if (status == 8) {
+        throw QException();
+    }
+
+    json.setObject(json.object().value("result").toObject());
+    MatchContainer matches;
+    MatchJsonSerializer::parse(json.toJson(), matches);
+
+    return matches.getMatches();
+}
+
 void Dota2API::setFormat(QString format)
 {
     this->format = format;
@@ -98,7 +126,7 @@ void Dota2API::setKey(QString key)
     Dota2API::key = key;
 }
 
-const QString Dota2API::getKey()
+QString Dota2API::getKey() const
 {
     return Dota2API::key;
 }
