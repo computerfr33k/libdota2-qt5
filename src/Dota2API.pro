@@ -10,8 +10,6 @@ QT       -= gui
 TARGET = Dota2API
 TEMPLATE = lib
 
-LIBS += -lprotobuf
-
 DEFINES += DOTA2API_LIBRARY
 
 SOURCES += dota2api.cpp \
