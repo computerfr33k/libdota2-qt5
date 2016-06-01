@@ -17,7 +17,7 @@ namespace entities
         void write(QJsonObject &jsonObj) const;
         void read(const QJsonObject &jsonObj);
 
-        QList<Player> getPlayers();
+        QList<Player> getPlayers() const;
 
     private:
         QList<Player> players;

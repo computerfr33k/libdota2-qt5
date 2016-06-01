@@ -21,32 +21,28 @@ namespace entities
          * Getters
          */
         bool getRadiantWin();
-        int getDuration();
-        int getStartTime();
-        qint64 getMatchId();
-        qint64 getMatchSequenceNumber();
-        int getTowerStatusRadiant();
-        int getTowerStatusDire();
-        int getBarracksStatusRadiant();
-        int getBarracksStatusDire();
-        int getCluster();
-        int getFirstBloodTime();
-        int getLobbyType();
-        int getHumanPlayers();
-        int getLeagueId();
-        int getPositiveVotes();
-        int getNegativeVotes();
-        int getGameMode();
-        int getFlags();
-        int getEngine();
-        int getRadiantScore();
-        int getDireScore();
+        int getDuration() const;
+        int getStartTime() const;
+        qint64 getMatchId() const;
+        qint64 getMatchSequenceNumber() const;
+        int getTowerStatusRadiant() const;
+        int getTowerStatusDire() const;
+        int getBarracksStatusRadiant() const;
+        int getBarracksStatusDire() const;
+        int getCluster() const;
+        int getFirstBloodTime() const;
+        int getLobbyType() const;
+        int getHumanPlayers() const;
+        int getLeagueId() const;
+        int getPositiveVotes() const;
+        int getNegativeVotes() const;
+        int getGameMode() const;
+        int getFlags() const;
+        int getEngine() const;
+        int getRadiantScore() const;
+        int getDireScore() const;
 
-        QList<Player> getPlayers();
-
-    signals:
-
-    public slots:
+        QList<Player> getPlayers() const;
 
     private:
         bool radiant_win;

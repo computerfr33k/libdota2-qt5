@@ -7,10 +7,10 @@
 QT       += network
 QT       -= gui
 
+CONFIG += c++11
+
 TARGET = Dota2API
 TEMPLATE = lib
-
-LIBS += -lprotobuf
 
 DEFINES += DOTA2API_LIBRARY
 
@@ -21,7 +21,9 @@ SOURCES += dota2api.cpp \
     entities/match.cpp \
     serializers/matchjsonserializer.cpp \
     entities/matchcontainer.cpp \
-    entities/matchhistory.cpp
+    entities/matchhistory.cpp \
+    entities/hero.cpp \
+    entities/herocontainer.cpp
 
 HEADERS += dota2api.h\
         dota2api_global.h \
@@ -34,7 +36,9 @@ HEADERS += dota2api.h\
     enums/gamemode.h \
     enums/skill.h \
     entities/matchcontainer.h \
-    entities/matchhistory.h
+    entities/matchhistory.h \
+    entities/hero.h \
+    entities/herocontainer.h
 
 unix {
     target.path = /usr/lib

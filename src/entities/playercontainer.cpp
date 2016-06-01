@@ -38,7 +38,7 @@ void PlayerContainer::add(Player &p)
     this->players.append(p);
 }
 
-QList<Player> PlayerContainer::getPlayers()
+QList<Player> PlayerContainer::getPlayers() const
 {
     return this->players;
 }

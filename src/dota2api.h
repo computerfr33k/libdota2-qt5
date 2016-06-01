@@ -15,11 +15,13 @@
 #include <QStandardPaths>
 
 #include "dota2api_global.h"
-#include <entities/player.h>
-#include <entities/playercontainer.h>
-#include <entities/match.h>
-#include <entities/matchcontainer.h>
-#include <entities/matchhistory.h>
+#include "entities/player.h"
+#include "entities/playercontainer.h"
+#include "entities/match.h"
+#include "entities/matchcontainer.h"
+#include "entities/matchhistory.h"
+#include "entities/hero.h"
+#include "entities/herocontainer.h"
 
 using namespace entities;
 
@@ -32,6 +34,7 @@ public:
     Match getMatchDetails(QString matchId) const;
     MatchHistory getMatchHistory(QString accountId) const;
     QList<Match> getMatchHistoryBySequenceNumber(qint64 start_match_seq_num) const;
+    QList<Hero> getHeroes(QString language = "en_US", bool itemizedOnly = false) const;
 
     QString getKey() const;
 

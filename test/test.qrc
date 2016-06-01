@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/matches">
+        <file>test_files/match1.json</file>
+    </qresource>
+</RCC>

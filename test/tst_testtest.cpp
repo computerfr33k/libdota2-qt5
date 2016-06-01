@@ -1,5 +1,8 @@
 #include <QString>
 #include <QtTest>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
 
 class TestTest : public QObject
 {
@@ -14,11 +17,6 @@ private Q_SLOTS:
 
 TestTest::TestTest()
 {
-}
-
-void TestTest::testCase1()
-{
-    QVERIFY2(true, "Failure");
 }
 
 QTEST_APPLESS_MAIN(TestTest)

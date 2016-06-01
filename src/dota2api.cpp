@@ -71,6 +71,8 @@ MatchHistory Dota2API::getMatchHistory(QString accountId) const
     loop.exec();
 
     QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
+    reply->close();
+    reply->deleteLater();
 
     int resultStatus = json.object().value("result").toObject().value("status").toInt();
     if (resultStatus == 15) {
@@ -104,6 +106,9 @@ QList<Match> Dota2API::getMatchHistoryBySequenceNumber(qint64 start_match_seq_nu
     loop.exec();
 
     QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
+    reply->close();
+    reply->deleteLater();
+
     int status = json.object().value("result").toObject().value("status").toInt();
     if (status == 8) {
         throw QException();
@@ -114,6 +119,35 @@ QList<Match> Dota2API::getMatchHistoryBySequenceNumber(qint64 start_match_seq_nu
     MatchJsonSerializer::parse(json.toJson(), matches);
 
     return matches.getMatches();
+}
+
+QList<Hero> Dota2API::getHeroes(QString language, bool itemizedOnly) const
+{
+    QString urlBuilder = "https://api.steampowered.com/";
+    urlBuilder.append("IEconDOTA2_570/GetHeroes/v1");
+    urlBuilder.append("?key=" + this->getKey());
+    urlBuilder.append("&language=" + language);
+
+    QUrl url = QUrl(urlBuilder);
+    qDebug() << url.toString();
+    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
+
+    QEventLoop loop;
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QJsonDocument json = QJsonDocument::fromJson(reply->readAll());
+    json.setObject(json.object().value("result").toObject());
+
+    HeroContainer heroes;
+    MatchJsonSerializer::parse(json.toJson(), heroes);
+
+    reply->close();
+    reply->deleteLater();
+
+    qDebug() << heroes.getHeroes().first().getLocalizedName();
+
+    return heroes.getHeroes();
 }
 
 void Dota2API::setFormat(QString format)
