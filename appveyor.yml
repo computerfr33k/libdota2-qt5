@@ -7,4 +7,3 @@ install:
 build_script:
   - qmake
   - nmake
-  - test\release\tst_testtest.exe
