@@ -29,17 +29,17 @@ namespace entities {
         jsonObj["localized_name"] = this->localizedName;
     }
 
-    const QString Hero::getName() const
+    QString Hero::getName() const
     {
         return this->name;
     }
 
-    const int Hero::getId() const
+    int Hero::getId() const
     {
         return this->id;
     }
 
-    const QString Hero::getLocalizedName() const
+    QString Hero::getLocalizedName() const
     {
         return this->localizedName;
     }

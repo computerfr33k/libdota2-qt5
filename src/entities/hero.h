@@ -19,9 +19,9 @@ namespace entities {
         /*
          * Getters
          */
-        const QString getName() const;
-        const int getId() const;
-        const QString getLocalizedName() const;
+        QString getName() const;
+        int getId() const;
+        QString getLocalizedName() const;
 
     private:
         int id;
