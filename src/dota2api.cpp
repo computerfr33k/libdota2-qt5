@@ -130,7 +130,7 @@ HeroContainer Dota2API::getHeroes(QString language, bool itemizedOnly) const
 
     QUrl url = QUrl(urlBuilder);
     QNetworkRequest req(url);
-    req.setAttribute(QNetworkRequest::CacheLoadControl, QNetworkRequest::PreferCache);
+    req.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
     QNetworkReply *reply = qnam->get(req);
 
     QEventLoop loop;
