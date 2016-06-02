@@ -34,7 +34,7 @@ public:
     Match getMatchDetails(QString matchId) const;
     MatchHistory getMatchHistory(QString accountId) const;
     QList<Match> getMatchHistoryBySequenceNumber(qint64 start_match_seq_num) const;
-    QList<Hero> getHeroes(QString language = "en_US", bool itemizedOnly = false) const;
+    HeroContainer getHeroes(QString language = "en_US", bool itemizedOnly = false) const;
 
     QString getKey() const;
 

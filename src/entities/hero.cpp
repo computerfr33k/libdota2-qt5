@@ -5,7 +5,7 @@ namespace entities {
     /*
      * Set blank/default values
      */
-    Hero::Hero()
+    Hero::Hero(): id(0), name(""), localizedName("")
     {
     }
 

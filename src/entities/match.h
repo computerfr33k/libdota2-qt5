@@ -20,7 +20,7 @@ namespace entities
         /*
          * Getters
          */
-        bool getRadiantWin();
+        bool getRadiantWin() const;
         int getDuration() const;
         int getStartTime() const;
         qint64 getMatchId() const;

@@ -47,7 +47,7 @@ namespace entities
         jsonObj["duration"] = this->duration;
     }
 
-    bool Match::getRadiantWin()
+    bool Match::getRadiantWin() const
     {
         return this->radiant_win;
     }

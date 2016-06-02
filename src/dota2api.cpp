@@ -121,7 +121,7 @@ QList<Match> Dota2API::getMatchHistoryBySequenceNumber(qint64 start_match_seq_nu
     return matches.getMatches();
 }
 
-QList<Hero> Dota2API::getHeroes(QString language, bool itemizedOnly) const
+HeroContainer Dota2API::getHeroes(QString language, bool itemizedOnly) const
 {
     QString urlBuilder = "https://api.steampowered.com/";
     urlBuilder.append("IEconDOTA2_570/GetHeroes/v1");
@@ -129,8 +129,9 @@ QList<Hero> Dota2API::getHeroes(QString language, bool itemizedOnly) const
     urlBuilder.append("&language=" + language);
 
     QUrl url = QUrl(urlBuilder);
-    qDebug() << url.toString();
-    QNetworkReply *reply = qnam->get(QNetworkRequest(url));
+    QNetworkRequest req(url);
+    req.setAttribute(QNetworkRequest::CacheLoadControl, QNetworkRequest::PreferCache);
+    QNetworkReply *reply = qnam->get(req);
 
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
@@ -145,9 +146,7 @@ QList<Hero> Dota2API::getHeroes(QString language, bool itemizedOnly) const
     reply->close();
     reply->deleteLater();
 
-    qDebug() << heroes.getHeroes().first().getLocalizedName();
-
-    return heroes.getHeroes();
+    return heroes;
 }
 
 void Dota2API::setFormat(QString format)

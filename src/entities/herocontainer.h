@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QException>
 
 #include "entities/hero.h"
 #include "serializers/jsonserializable.h"
@@ -20,8 +21,17 @@ namespace entities {
         void read(const QJsonObject &jsonObj);
         void write(QJsonObject &jsonObj) const;
 
-        void add(const Hero &hero);
+        /*
+         * Getters
+         */
         QList<Hero> getHeroes() const;
+        Hero getHeroById(int id) const;
+        Hero getHeroByName(QString name) const;
+
+        /*
+         * Setters
+         */
+        void add(const Hero &hero);
 
     private:
         QList<Hero> heroes;
