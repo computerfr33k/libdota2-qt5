@@ -7,8 +7,26 @@ QString Dota2API::language  = "en_us";
 QString Dota2API::format = "json";
 // end initialize static
 
-Dota2API::Dota2API()
+/**
+ * Initialize the Dota2API Library.
+ *
+ * If the `apiKey` parameter is null or empty,
+ * it will fallback to using the D2_API_KEY environment variable for the api key.
+ *
+ * @brief Dota2API::Dota2API
+ * @param apiKey | @Nullable
+ */
+Dota2API::Dota2API(QString apiKey)
 {
+    QString key = getenv("D2_API_KEY");
+    if (!key.isEmpty() && !key.isNull()) {
+        this->setKey(key);
+    } else if (!apiKey.isNull()) {
+        this->setKey(apiKey);
+    } else {
+        this->setKey("");
+    }
+
     qnam = new QNetworkAccessManager;
     QNetworkDiskCache *cache = new QNetworkDiskCache;
     cache->setCacheDirectory(QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first());

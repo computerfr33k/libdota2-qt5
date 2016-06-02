@@ -28,7 +28,7 @@ using namespace entities;
 class DOTA2APISHARED_EXPORT Dota2API
 {
 public:
-    explicit Dota2API();
+    explicit Dota2API(QString apiKey);
     ~Dota2API();
 
     Match getMatchDetails(QString matchId) const;
